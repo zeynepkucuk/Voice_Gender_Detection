@@ -1,0 +1,20 @@
+# Data manipulation
+numpy>=1.20.0
+matplotlib>=3.5.0
+
+# Feature extraction
+scipy>=1.7.0
+librosa>=0.8.0
+python_speech_features>=0.6.1
+
+# Model training
+scikit-learn>=1.0.0
+pickle-mixin>=1.0.2
+
+# Live recording
+sounddevice>=0.4.4
+soundfile>=0.10.3
+
+# API related packages
+flask>=2.0.0
+werkzeug>=2.0.0
