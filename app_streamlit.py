@@ -4,7 +4,8 @@ import pickle
 import numpy as np
 import os
 import librosa
-from sklearn.mixture import GaussianMixture
+# Updated import to avoid deprecation warning
+from sklearn.mixture import GaussianMixture  # Direct import from sklearn.mixture
 import tempfile
 import matplotlib.pyplot as plt
 import time
@@ -54,7 +55,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Function to load models
-@st.cache_resource
+@st.cache(allow_output_mutation=True)
 def load_models():
     """Load gender classification models and return them"""
     try:
@@ -136,8 +137,8 @@ def main():
     st.markdown("<h1 class='main-header'>Voice Gender Classification</h1>", unsafe_allow_html=True)
     st.markdown("<p class='sub-header'>Upload an audio file to predict the speaker's gender</p>", unsafe_allow_html=True)
     
-    # Information box
-    with st.expander("ℹ️ About this app", expanded=False):
+    # Information box - using beta_expander instead of expander for older Streamlit versions
+    with st.beta_expander("ℹ️ About this app", expanded=False):
         st.markdown("""
         This app uses Gaussian Mixture Models (GMMs) to classify the gender of a speaker from an audio recording.
         
@@ -162,7 +163,13 @@ def main():
     
     # Record audio option
     st.markdown("<p class='sub-header'>Or record audio directly</p>", unsafe_allow_html=True)
-    audio_recording = st.audio_recorder(text="Click to record", pause_threshold=2.0)
+    
+    # Check if audio_recorder is available in this Streamlit version
+    try:
+        audio_recording = st.audio_recorder(text="Click to record", pause_threshold=2.0)
+    except AttributeError:
+        st.warning("Audio recording is not available in your Streamlit version. Please upgrade Streamlit to use this feature.")
+        audio_recording = None
     
     # Process the uploaded file or recording
     if uploaded_file is not None:
